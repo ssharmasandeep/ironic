@@ -202,7 +202,7 @@ class AgentClient(object):
         try:
             response = self.session.post(
                 url, params=request_params, data=body,
-                verify=self._get_verify(node),
+                verify=False,
                 timeout=CONF.agent.command_timeout)
         except (requests.ConnectionError, requests.Timeout, ssl.SSLError) as e:
             result = self._handle_timeout_on_command_execution(node, method,
@@ -312,12 +312,13 @@ class AgentClient(object):
               }
         """
         url = self._get_command_url(node)
-        LOG.debug('Fetching status of agent commands for node %s', node.uuid)
+        LOG.debug('--------- %s --------Fetching status of agent commands for node %s', url,node.uuid)
+        LOG.debug('--------- %s --------Fetching status of agent commands for node %s', url,node.uuid)
 
         def _get():
             try:
                 return self.session.get(url,
-                                        verify=self._get_verify(node),
+                                        verify=False,
                                         timeout=CONF.agent.command_timeout)
             except (requests.ConnectionError, requests.Timeout) as e:
                 msg = (_('Failed to connect to the agent running on node '
