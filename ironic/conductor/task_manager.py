@@ -554,7 +554,7 @@ class TaskManager(object):
         # Advance the state model for the given event. Note that this doesn't
         # alter the node in any way. This may raise InvalidState, if this event
         # is not allowed in the current state.
-        LOG.info("XXXXXXXXXX state %s", target_state)
+        LOG.info("XXXXXXXXXX state %s self %s", target_state, self.node.provision_state)
         LOG.info("XXXXXXXXXX self state %s", self.node.target_provision_state)
         self.fsm.process_event(event, target_state=target_state)
         LOG.info("YYYYYYYY state %s", target_state)
@@ -574,12 +574,15 @@ class TaskManager(object):
         # target_provision_state is cleared
         if not callback and self.fsm.is_stable(self.node.provision_state):
             self.node.target_provision_state = states.NOSTATE
+            LOG.info("callback true self taget state %s", self.node.target_provision_state)
         else:
             self.node.target_provision_state = self.fsm.target_state
-        LOG.info("YYYY self state %s", self.provision.target_provision_state)
-        if self.node.provision_state == states.AVAILABLE and self.provision.target_provision_state == states.NOSTATE:
+
+        LOG.info("YYYY self taget state %s", self.node.target_provision_state)
+        LOG.info("XXXXXXXXXX state %s self %s", target_state, self.node.provision_state)
+        if self.node.provision_state == states.AVAILABLE and self.node.target_provision_state == states.NOSTATE:
             self.provision.target_provision_state = states.DEPLOYING
-            LOG.info("YYYY we moved self state %s", self.provision.target_provision_state)
+            LOG.info("YYYY we moved self state %s", self.node.target_provision_state)
 
 
         # set up the async worker
