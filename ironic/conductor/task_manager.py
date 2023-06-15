@@ -554,7 +554,11 @@ class TaskManager(object):
         # Advance the state model for the given event. Note that this doesn't
         # alter the node in any way. This may raise InvalidState, if this event
         # is not allowed in the current state.
+        LOG.info("XXXXXXXXXX state %s", target_state)
+        LOG.info("XXXXXXXXXX self state %s", self.node.target_provision_state)
         self.fsm.process_event(event, target_state=target_state)
+        LOG.info("YYYYYYYY state %s", target_state)
+        LOG.info("YYYYYYYY self state %s", self.node.target_provision_state)
 
         # stash current states in the error handler if callback is set,
         # in case we fail to get a worker from the pool
@@ -572,6 +576,11 @@ class TaskManager(object):
             self.node.target_provision_state = states.NOSTATE
         else:
             self.node.target_provision_state = self.fsm.target_state
+        LOG.info("YYYY self state %s", self.provision.target_provision_state)
+        if self.node.provision_state == states.AVAILABLE && self.provision.target_provision_state == states.NOSTATE
+            self.provision.target_provision_state = states.DEPLOYING
+            LOG.info("YYYY we moved self state %s", self.provision.target_provision_state)
+
 
         # set up the async worker
         if callback:
