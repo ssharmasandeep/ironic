@@ -577,7 +577,7 @@ class TaskManager(object):
         else:
             self.node.target_provision_state = self.fsm.target_state
         LOG.info("YYYY self state %s", self.provision.target_provision_state)
-        if self.node.provision_state == states.AVAILABLE && self.provision.target_provision_state == states.NOSTATE
+        if self.node.provision_state == states.AVAILABLE and self.provision.target_provision_state == states.NOSTATE
             self.provision.target_provision_state = states.DEPLOYING
             LOG.info("YYYY we moved self state %s", self.provision.target_provision_state)
 
