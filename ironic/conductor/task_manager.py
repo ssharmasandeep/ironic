@@ -581,7 +581,7 @@ class TaskManager(object):
         LOG.info("YYYY self taget state %s", self.node.target_provision_state)
         LOG.info("XXXXXXXXXX state %s self %s", target_state, self.node.provision_state)
         if self.node.provision_state == states.AVAILABLE and self.node.target_provision_state == states.NOSTATE:
-            self.provision.target_provision_state = states.ACTIVE
+            self.node.target_provision_state = states.ACTIVE
             LOG.info("YYYY we moved self state %s", self.node.target_provision_state)
 
 
